@@ -13,7 +13,7 @@ public class MovingEnemy : MonoBehaviour {
     public float maxSpeed = 4f; // velocity of the character
     public float speed = 5f; // deprecated and not being used
     public float acceleration = 2f; // acceleration of the speed
-
+    Vector2 prevVelocity;
     
     HealthScript hs; // health script to find
     bool isMoving = false; // checks if already moving, to not set next target 
@@ -75,7 +75,11 @@ public class MovingEnemy : MonoBehaviour {
 
     void FixedUpdate ()
     {
-        if(currentTarget != (topIndexWay+1))
+        if (curMoveState == moveState.stop)
+        {
+            // do nothing while stopped
+        }
+        else if (currentTarget != (topIndexWay+1))
         {
             // normalize direction vector to 1 float
             direction = Vector2.ClampMagnitude((WayPointList[currentTarget].transform.position - transform.position), 1f);
@@ -101,6 +105,43 @@ public class MovingEnemy : MonoBehaviour {
         When reach next waypoint, set enemy
         to move towards next target
     */
+
+    public void SwitchState(string nState )
+    {
+        Debug.Log("switch state called");
+
+        moveState nextState;
+
+        // find correct nextState to turn into
+        if (nState == "forward")
+            nextState = moveState.forward;
+        else if (nState == "stop")
+            nextState = moveState.stop;
+        else if (nState == "backward")
+            nextState = moveState.backward;
+        else
+        {
+            Debug.Log("crash");
+            throw new System.Exception(" incorrect next state passed");
+        }
+
+        // save previous velocity
+        // and then set current body.velcoity to 0,0
+        if (nextState == moveState.stop && curMoveState == moveState.forward)
+        {
+            prevVelocity = body.velocity;
+            body.velocity = new Vector2(0, 0);
+        }
+        /*
+            Switch velocity back to the forward state
+        //*/
+        else if (nextState == moveState.forward && curMoveState == moveState.stop)
+        {
+            body.velocity = prevVelocity;
+        }
+
+        curMoveState = nextState;
+    }
 
     void OnTriggerEnter2D(Collider2D other)
     {

@@ -22,6 +22,8 @@ public class OrdinaryHuman : MonoBehaviour {
     
     // list of waypoints to find
     List<WayPointScript> WayPointList;
+    List<MovingEnemy> MovingEnemyList;
+
     int currentTarget = -1;
     bool dead = false;
 
@@ -45,34 +47,36 @@ public class OrdinaryHuman : MonoBehaviour {
         body = gameObject.GetComponent<Rigidbody2D>();
         hs = gameObject.GetComponent<HealthScript>();
 
-        WayPointList = GameObject.FindObjectsOfType<WayPointScript>().ToList<WayPointScript>();
         // order waypoint list then sort, cast into waypoint list, and assign
+        WayPointList = GameObject.FindObjectsOfType<WayPointScript>().ToList<WayPointScript>();
         WayPointList = WayPointList.OrderBy(wp => wp.wayIndex).ToList<WayPointScript>();
-        Debug.Log(WayPointList);
-        foreach(  WayPointScript wp in WayPointList)
-        {
-            Debug.Log(wp.wayIndex);
-        }
-        
-        if(WayPointList.Count()>0)
+
+        MovingEnemyList = GameObject.FindObjectsOfType<MovingEnemy>().ToList<MovingEnemy>();
+
+        if (WayPointList.Count() > 0)
         {
             currentTarget = 0;
         }
-	}
+    }
 	
 	// Update is called once per frame
 	void Update () {
 
-
-        /* comment out using normal coroutine with 
-        if (!isMoving && (currentTarget<topIndexWay+1))
+        if (Input.GetKeyDown(KeyCode.W))
         {
-            collided = false;
-            isMoving = true;
-            StartCoroutine(moveTo(WayPointList[currentTarget].transform.position));
-            Debug.Log("start moving towards: " + WayPointList[currentTarget].transform.position);
-        }   //*/
-
+            Debug.Log("w called");
+            foreach ( MovingEnemy me in MovingEnemyList)
+            {
+                me.SwitchState("stop");
+            }
+        }
+        else if (Input.GetKeyUp(KeyCode.W))
+        {
+            foreach (MovingEnemy me in MovingEnemyList)
+            {
+                me.SwitchState("forward");
+            }
+        }
 
         // if not moving
         // then move to next node

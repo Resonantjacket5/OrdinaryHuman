@@ -14,6 +14,8 @@ public class PlayerScript : MonoBehaviour {
     Rigidbody2D rb2d;
     // list of waypoints to find
     List<WayPointScript> WayPointList;
+    List<MovingEnemy> MovingEnemyList;
+
     int currentTarget = -1;
     bool dead = false;
 
@@ -23,9 +25,12 @@ public class PlayerScript : MonoBehaviour {
         rb2d = gameObject.GetComponent<Rigidbody2D>();
         hs = gameObject.GetComponent<HealthScript>();
 
-        WayPointList = GameObject.FindObjectsOfType<WayPointScript>().ToList<WayPointScript>();
         // order waypoint list then sort, cast into waypoint list, and assign
+        WayPointList = GameObject.FindObjectsOfType<WayPointScript>().ToList<WayPointScript>();        
         WayPointList = WayPointList.OrderBy(wp => wp.wayIndex).ToList<WayPointScript>();
+
+
+        MovingEnemyList = GameObject.FindObjectsOfType<MovingEnemy>().ToList<MovingEnemy>();
         
         if(WayPointList.Count()>0)
         {
@@ -35,6 +40,7 @@ public class PlayerScript : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+
         // if not moving
         // then move to next nodez
 
@@ -93,6 +99,9 @@ public class PlayerScript : MonoBehaviour {
             }
         }
     }
+
+
+
 
     void OnGUI ()
     {
