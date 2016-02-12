@@ -36,7 +36,7 @@ public class PlayerScript : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         // if not moving
-        // then move to next node
+        // then move to next nodez
 
         
         if (!isMoving && (currentTarget<topIndexWay+1))
@@ -55,7 +55,7 @@ public class PlayerScript : MonoBehaviour {
         Vector2 start = transform.position;
         // time = distance / speed 
         float journeyTime = Vector2.Distance(start, dest) / speed;
-        float currentTime = 0;
+        //float currentTime = 0;
         /*
         while (currentTime < journeyTime)
         {
