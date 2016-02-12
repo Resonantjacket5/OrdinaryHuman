@@ -56,23 +56,12 @@ public class MovingEnemy : MonoBehaviour {
         
         if(WayPointList.Count()>0)
         {
-            currentTarget = 0;
+            currentTarget = startIndexWay;
         }
 	}
 	
 	// Update is called once per frame
 	void Update () {
-
-
-        /* comment out using normal coroutine with 
-        if (!isMoving && (currentTarget<topIndexWay+1))
-        {
-            collided = false;
-            isMoving = true;
-            StartCoroutine(moveTo(WayPointList[currentTarget].transform.position));
-            Debug.Log("start moving towards: " + WayPointList[currentTarget].transform.position);
-        }   //*/
-
 
         // if not moving
         // then move to next node
