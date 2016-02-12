@@ -7,17 +7,21 @@ public class PlayerScript : MonoBehaviour {
 
     public int topIndexWay;
     public float speed = 5f;
+    HealthScript hs;
     bool isMoving = false;
     bool collided = false;
     Rigidbody2D rb2d;
     // list of waypoints to find
     List<WayPointScript> WayPointList;
     int currentTarget = -1;
+    bool dead = false;
 
 	// Use this for initialization
 	void Start () {
         
         rb2d = gameObject.GetComponent<Rigidbody2D>();
+        hs = gameObject.GetComponent<HealthScript>();
+
         WayPointList = GameObject.FindObjectsOfType<WayPointScript>().ToList<WayPointScript>();
         // order waypoint list then sort, cast into waypoint list, and assign
         WayPointList = WayPointList.OrderBy(wp => wp.wayIndex).ToList<WayPointScript>();
@@ -95,5 +99,26 @@ public class PlayerScript : MonoBehaviour {
                 currentTarget++;
             }
         }
+    }
+
+    void OnGUI ()
+    {
+        GUI.Label(
+            new Rect(10, 10, 200, 100),
+            "Health :" + hs.getHealth().ToString()
+            );
+        if(dead == true)
+        {
+            GUI.Label(
+            new Rect(210, 10, 200, 100),
+            "You're a Loser"
+            );
+        }
+    }
+
+    public void die()
+    {
+        gameObject.GetComponent<SpriteRenderer>().enabled=false;
+        dead = true;
     }
 }
