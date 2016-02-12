@@ -5,6 +5,7 @@ using System.Collections.Generic;
 
 public class PlayerScript : MonoBehaviour {
 
+    public int startIndexWay;
     public int topIndexWay;
     public float speed = 5f;
     HealthScript hs;
@@ -25,11 +26,6 @@ public class PlayerScript : MonoBehaviour {
         WayPointList = GameObject.FindObjectsOfType<WayPointScript>().ToList<WayPointScript>();
         // order waypoint list then sort, cast into waypoint list, and assign
         WayPointList = WayPointList.OrderBy(wp => wp.wayIndex).ToList<WayPointScript>();
-        Debug.Log(WayPointList);
-        foreach(  WayPointScript wp in WayPointList)
-        {
-            Debug.Log(wp.wayIndex);
-        }
         
         if(WayPointList.Count()>0)
         {
@@ -48,7 +44,7 @@ public class PlayerScript : MonoBehaviour {
             collided = false;
             isMoving = true;
             StartCoroutine(moveTo(WayPointList[currentTarget].transform.position));
-            Debug.Log("start moving towards: " + WayPointList[currentTarget].transform.position);
+            //Debug.Log("start moving towards: " + WayPointList[currentTarget].transform.position);
         }
 	}
 
@@ -84,14 +80,11 @@ public class PlayerScript : MonoBehaviour {
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log("on trigger");
         
         if (other.GetComponent<WayPointScript>() != null)
         {
-            Debug.Log("not null");
             if(currentTarget == other.GetComponent<WayPointScript>().wayIndex)
             {
-                Debug.Log("found target");
                 // set collided to true to exit Coroutine Movetowards
                 collided = true;
 
