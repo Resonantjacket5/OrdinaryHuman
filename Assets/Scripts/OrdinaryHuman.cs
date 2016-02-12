@@ -9,6 +9,7 @@ public class OrdinaryHuman : MonoBehaviour {
     // and last index to stop at
     public int startIndexWay;
     public int topIndexWay;
+    public GameObject WayParent;
 
     // velocity of the character
     public float maxSpeed = 10f;
@@ -49,7 +50,7 @@ public class OrdinaryHuman : MonoBehaviour {
         hs = gameObject.GetComponent<HealthScript>();
 
         // order waypoint list then sort, cast into waypoint list, and assign
-        WayPointList = GameObject.FindObjectsOfType<WayPointScript>().ToList<WayPointScript>();
+        WayPointList = WayParent.GetComponentsInChildren<WayPointScript>().ToList();
         WayPointList = WayPointList.OrderBy(wp => wp.wayIndex).ToList<WayPointScript>();
 
         MovingEnemyList = GameObject.FindObjectsOfType<MovingEnemy>().ToList<MovingEnemy>();

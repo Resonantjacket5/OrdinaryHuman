@@ -9,6 +9,7 @@ public class MovingEnemy : MonoBehaviour {
     // and last index to stop at
     public int startIndexWay;
     public int topIndexWay;
+    public GameObject WayParent;
     
     public float maxSpeed = 4f; // velocity of the character
     public float speed = 5f; // deprecated and not being used
@@ -46,9 +47,9 @@ public class MovingEnemy : MonoBehaviour {
 
         // default moveState is forwards unless changed.
         curMoveState = moveState.forward;
-        
+
         // fetch all waypoints 
-        WayPointList = GameObject.FindObjectsOfType<WayPointScript>().ToList<WayPointScript>();
+        WayPointList = WayParent.GetComponentsInChildren<WayPointScript>().ToList();
         // order waypoint list then sort, cast into waypoint list, and assign
         WayPointList = WayPointList.OrderBy(wp => wp.wayIndex).ToList<WayPointScript>();
         
