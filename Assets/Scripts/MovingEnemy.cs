@@ -101,6 +101,12 @@ public class MovingEnemy : MonoBehaviour {
         }
     }
 
+    public Vector2 getVelocity()
+    {
+        return body.velocity;
+    }
+
+
     /*
         When reach next waypoint, set enemy
         to move towards next target
@@ -108,7 +114,7 @@ public class MovingEnemy : MonoBehaviour {
 
     public void SwitchState(string nState )
     {
-        Debug.Log("switch state called");
+        Debug.Log("switch state called "+nState);
 
         moveState nextState;
 

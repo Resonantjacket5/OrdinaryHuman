@@ -26,6 +26,7 @@ public class OrdinaryHuman : MonoBehaviour {
 
     int currentTarget = -1;
     bool dead = false;
+    bool isAnyPressed = false;
 
     // direction for ordinaryhuman to move towards
     // should be normalized 
@@ -34,7 +35,7 @@ public class OrdinaryHuman : MonoBehaviour {
     // acceleration of the speed
     public float acceleration = 2f;
 
-
+    string oppDirection = "";
 
     Vector2 respawnPosition;
 
@@ -62,36 +63,120 @@ public class OrdinaryHuman : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-        if (Input.GetKeyDown(KeyCode.W))
+        StopEnemies();
+    }
+
+    void StopEnemies()
+    {
+        bool w = Input.GetKeyDown(KeyCode.W);
+        bool a = Input.GetKeyDown(KeyCode.A);
+        bool s = Input.GetKeyDown(KeyCode.S);
+        bool d = Input.GetKeyDown(KeyCode.D);
+
+        
+        // w,a,s,or d not pressed yet
+        if (!isAnyPressed)
         {
-            Debug.Log("w called");
-            foreach ( MovingEnemy me in MovingEnemyList)
+            if (w)
+                oppDirection = "w";
+            else if (a)
+                oppDirection = "a";
+            else if (s)
+                oppDirection = "s";
+            else if (d)
+                oppDirection = "d";
+            else
+                oppDirection = "";
+
+            Debug.Log("input: " + oppDirection);
+            if (w || a || s || d)
             {
-                me.SwitchState("stop");
+
+                isAnyPressed = true;
+
+                List<MovingEnemy> MovingEnemyToStopList = new List<MovingEnemy>();
+
+                foreach (MovingEnemy me in MovingEnemyList)
+                {
+                    if (correctEnemy(oppDirection, me.getVelocity()))
+                        MovingEnemyToStopList.Add(me);
+                }
+                foreach (MovingEnemy me in MovingEnemyToStopList)
+                {
+                    me.SwitchState("stop");
+                }
             }
         }
-        else if (Input.GetKeyUp(KeyCode.W))
+        else if (oppDirection != "" && Input.GetKeyUp(oppDirection.ToLower()))
         {
+            Debug.Log("key up");
             foreach (MovingEnemy me in MovingEnemyList)
             {
                 me.SwitchState("forward");
             }
+            isAnyPressed = false;
         }
+    }
 
-        // if not moving
-        // then move to next node
-        if (!isMoving && (currentTarget < topIndexWay + 1))
+    /*
+        The correct enemy to set to pause for the direciton
+        w largest -y
+        a largest x 
+        s largest y
+        d largest -x
+    //*/
+    bool correctEnemy(string oppDirection, Vector2 velocity)
+    {
+        if (Mathf.Abs(velocity.x) > Mathf.Abs(velocity.y))
         {
-            collided = false;
-            isMoving = true;
-            //StartCoroutine(moveTo(WayPointList[currentTarget].transform.position));
-            Debug.Log("start moving towards: " + WayPointList[currentTarget].transform.position);
+            // x absolutely larger than y
+            if (velocity.x > 0)
+            {
+                if (oppDirection == "a")
+                    return true;
+                else
+                    return false;
+            }
+            else if (velocity.x < 0)
+            {
+                if (oppDirection == "d")
+                    return true;
+                else
+                    return false;
+            }
+            else
+                throw new System.Exception("shouldn't be here");
         }
+        else if (Mathf.Abs(velocity.x) < Mathf.Abs(velocity.y))
+        {
+            // y absolutely large than x
+            if (velocity.y > 0)
+            {
+                if (oppDirection == "s")
+                    return true;
+                else
+                    return false;
+            }
+            else if (velocity.y < 0)
+            {
+                if (oppDirection == "w")
+                    return true;
+                else
+                    return false;
+            }
+            else
+                throw new System.Exception("shouldn't be here");
+        }
+        else // both x and y are 0
+            return false;
     }
 
     void FixedUpdate ()
     {
-        if(currentTarget != (topIndexWay+1))
+        
+
+
+        if (currentTarget != (topIndexWay+1))
         {
             // normalize direction vector to 1 float
             direction = Vector2.ClampMagnitude((WayPointList[currentTarget].transform.position - transform.position), 1f);
