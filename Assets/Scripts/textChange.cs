@@ -1,23 +1,18 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 public class textChange : MonoBehaviour {
 	public List<string> text = new List<string>();
 
+	[TextArea(15,10)]
+	public string toshow;
 
 	// Use this for initialization
 	void Start () {
-		text.Add ("This is an average man.");
-		text.Add ("He goes to work every \n morning.");
-		text.Add ("And then he works all \n day.");
-		text.Add ("Nothing bad ever \n happens.");
-		text.Add ("Nothing good ever \n happens.");
-		text.Add ("His life is ordernary.");
-		text.Add ("Lets try to keep it \n that way.");
-		text.Add ("\n        -LEVEL ONE-");
-		text.Add ("\n Average Man usually \n isn't hit by cars.");
-		text.Add ("\n Use W,A,S, and D \n to control traffic.");
+		transform.position = new Vector3(0-10.52f, 4.25f, 0);
+		text =  toshow.Split ('#').ToList();
 		StartCoroutine (ChangeText (text));
 	}
 
