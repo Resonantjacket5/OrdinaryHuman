@@ -5,12 +5,17 @@ using System.Collections.Generic;
 
 public class MovingEnemy : MonoBehaviour {
 
+
+    // index to spawn at (the first actualy start one)
+    public int spawnIndexWay = 0;
     // first waypoint index to find
     // and last index to stop at
     public int startIndexWay;
     public int topIndexWay;
     public GameObject WayParent;
-    
+
+    public float delayTime;
+
     public float maxSpeed = 4f; // velocity of the character
     public float speed = 5f; // deprecated and not being used
     public float acceleration = 2f; // acceleration of the speed
@@ -56,7 +61,7 @@ public class MovingEnemy : MonoBehaviour {
         // if at least one waypoint exists, then set target to start        
         if(WayPointList.Count()>0)
         {
-            currentTarget = startIndexWay;
+            currentTarget = spawnIndexWay;
         }
 	}
 	

@@ -2,14 +2,18 @@
 using System.Collections;
 using System.Linq;
 using System.Collections.Generic;
+using UnityEditor.SceneManagement;
 
 public class OrdinaryHuman : MonoBehaviour {
+
 
     // first waypoint index to find
     // and last index to stop at
     public int startIndexWay;
     public int topIndexWay;
     public GameObject WayParent;
+
+
 
     // velocity of the character
     public float maxSpeed = 10f;
@@ -89,7 +93,6 @@ public class OrdinaryHuman : MonoBehaviour {
             else
                 oppDirection = "";
 
-            Debug.Log("input: " + oppDirection);
             if (w || a || s || d)
             {
 
@@ -99,6 +102,8 @@ public class OrdinaryHuman : MonoBehaviour {
 
                 foreach (MovingEnemy me in MovingEnemyList)
                 {
+                    // finds the correct enemy to stop for the 
+                    // button pressed
                     if (correctEnemy(oppDirection, me.getVelocity()))
                         MovingEnemyToStopList.Add(me);
                 }
@@ -110,7 +115,6 @@ public class OrdinaryHuman : MonoBehaviour {
         }
         else if (oppDirection != "" && Input.GetKeyUp(oppDirection.ToLower()))
         {
-            Debug.Log("key up");
             foreach (MovingEnemy me in MovingEnemyList)
             {
                 me.SwitchState("forward");
@@ -174,9 +178,6 @@ public class OrdinaryHuman : MonoBehaviour {
 
     void FixedUpdate ()
     {
-        
-
-
         if (currentTarget != (topIndexWay+1))
         {
             // normalize direction vector to 1 float
@@ -255,6 +256,11 @@ public class OrdinaryHuman : MonoBehaviour {
     {
         gameObject.GetComponent<SpriteRenderer>().enabled=false;
         dead = true;
-        UnityEditor.SceneManagement.EditorSceneManager.OpenScene(UnityEditor.SceneManagement.EditorSceneManager.GetActiveScene().name);
+        Invoke("RestartLevel", 2f);
+    }
+
+    void RestartLevel()
+    {
+        EditorSceneManager.LoadScene(EditorSceneManager.GetActiveScene().name);
     }
 }
