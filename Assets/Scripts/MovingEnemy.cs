@@ -81,11 +81,17 @@ public class MovingEnemy : MonoBehaviour {
 
     void FixedUpdate ()
     {
+        MoveTowardsWaypoint();
+        FixRotation();
+    }
+
+    void MoveTowardsWaypoint()
+    {
         if (curMoveState == moveState.stop)
         {
             // do nothing while stopped
         }
-        else if (currentTarget != (topIndexWay+1))
+        else if (currentTarget != (topIndexWay + 1))
         {
             // normalize direction vector to 1 float
             direction = Vector2.ClampMagnitude((WayPointList[currentTarget].transform.position - transform.position), 1f);
@@ -106,6 +112,52 @@ public class MovingEnemy : MonoBehaviour {
             //body.velocity = new Vector2(0, 0);
         }
     }
+
+    void FixRotation()
+    {
+        Vector2 v = body.velocity;
+        float angle = Mathf.Atan2(v.y, v.x) * Mathf.Rad2Deg;
+        transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward); //Quaternion.LookRotation(body.velocity);
+    }
+    /*
+    void FixRotation()
+    {
+        Vector2 velocity = getVelocity();
+        if (Mathf.Abs(velocity.x) > Mathf.Abs(velocity.y))
+        {
+            // x absolutely larger than y
+            // moving right
+            if (velocity.x > 0)
+            {
+                
+            }
+            // currently moving left
+            else if (velocity.x < 0)
+            {
+                
+            }
+            else
+                throw new System.Exception("shouldn't be here");
+        }
+        else if (Mathf.Abs(velocity.x) < Mathf.Abs(velocity.y))
+        {
+            // y absolutely large than x
+            if (velocity.y > 0)
+            {
+                
+            }
+            else if (velocity.y < 0)
+            {
+                
+            }
+            else
+                throw new System.Exception("shouldn't be here");
+        }
+        else // both x and y are 0
+        {
+            // don't change rotation
+        }
+    }//*/
 
     public Vector2 getVelocity()
     {
