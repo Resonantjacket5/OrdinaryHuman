@@ -81,11 +81,17 @@ public class MovingEnemy : MonoBehaviour {
 
     void FixedUpdate ()
     {
+        MoveTowardsWaypoint();
+        FixRotation();
+    }
+
+    void MoveTowardsWaypoint()
+    {
         if (curMoveState == moveState.stop)
         {
             // do nothing while stopped
         }
-        else if (currentTarget != (topIndexWay+1))
+        else if (currentTarget != (topIndexWay + 1))
         {
             // normalize direction vector to 1 float
             direction = Vector2.ClampMagnitude((WayPointList[currentTarget].transform.position - transform.position), 1f);
@@ -105,6 +111,13 @@ public class MovingEnemy : MonoBehaviour {
             // stop moving
             //body.velocity = new Vector2(0, 0);
         }
+    }
+
+    void FixRotation()
+    {
+        Vector2 v = body.velocity;
+        float angle = Mathf.Atan2(v.y, v.x) * Mathf.Rad2Deg;
+        transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward); //Quaternion.LookRotation(body.velocity);
     }
 
     public Vector2 getVelocity()
