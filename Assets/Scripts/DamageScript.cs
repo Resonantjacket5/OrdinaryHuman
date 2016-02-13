@@ -26,4 +26,13 @@ public class DamageScript : MonoBehaviour {
             hs.decreaseHealthTimed(damage);
         }
     }
+
+    void OnCollisionEnter2D(Collision2D coll)
+    {
+        if (coll.gameObject.GetComponents<HealthScript>() != null)
+        {
+            HealthScript hs = coll.gameObject.GetComponent<HealthScript>();
+            hs.decreaseHealthTimed(damage);
+        }
+    }
 }

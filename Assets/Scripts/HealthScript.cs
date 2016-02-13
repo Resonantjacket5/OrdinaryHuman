@@ -59,13 +59,13 @@ public class HealthScript : MonoBehaviour {
 
     void die()
     {
-        if (transform.gameObject.GetComponent<PlayerScript>() == null)
+        if (transform.gameObject.GetComponent<OrdinaryHuman>() == null)
         {
             Destroy(transform.gameObject);
         }
         else
         {
-            transform.gameObject.GetComponent<PlayerScript>().die();
+            transform.gameObject.GetComponent<OrdinaryHuman>().die();
         }
         
     }
