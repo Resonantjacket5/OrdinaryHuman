@@ -119,45 +119,6 @@ public class MovingEnemy : MonoBehaviour {
         float angle = Mathf.Atan2(v.y, v.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward); //Quaternion.LookRotation(body.velocity);
     }
-    /*
-    void FixRotation()
-    {
-        Vector2 velocity = getVelocity();
-        if (Mathf.Abs(velocity.x) > Mathf.Abs(velocity.y))
-        {
-            // x absolutely larger than y
-            // moving right
-            if (velocity.x > 0)
-            {
-                
-            }
-            // currently moving left
-            else if (velocity.x < 0)
-            {
-                
-            }
-            else
-                throw new System.Exception("shouldn't be here");
-        }
-        else if (Mathf.Abs(velocity.x) < Mathf.Abs(velocity.y))
-        {
-            // y absolutely large than x
-            if (velocity.y > 0)
-            {
-                
-            }
-            else if (velocity.y < 0)
-            {
-                
-            }
-            else
-                throw new System.Exception("shouldn't be here");
-        }
-        else // both x and y are 0
-        {
-            // don't change rotation
-        }
-    }//*/
 
     public Vector2 getVelocity()
     {
