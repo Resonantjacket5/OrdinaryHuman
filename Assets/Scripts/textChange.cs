@@ -5,7 +5,8 @@ using System.Linq;
 
 public class textChange : MonoBehaviour {
 	public List<string> text = new List<string>();
-
+	public string nextScene;
+	public float numberofSeconds;
 	[TextArea(15,10)]
 	public string toshow;
 
@@ -24,9 +25,9 @@ public class textChange : MonoBehaviour {
 		TextMesh tMesh = GetComponent<TextMesh> ();
 		foreach (string str in text) {
 			tMesh.text = str;
-			yield return new WaitForSeconds (3);
+			yield return new WaitForSeconds (numberofSeconds);
 		}
-		UnityEditor.SceneManagement.EditorSceneManager.LoadScene("MainScene");
+		UnityEditor.SceneManagement.EditorSceneManager.LoadScene(nextScene);
 
 	}
 
